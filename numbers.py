@@ -41,6 +41,7 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            speak(n)
             color = next_color()
             n = next_number()
             played = True
