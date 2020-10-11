@@ -7,6 +7,15 @@ import sys
 
 from espeakng import ESpeakNG
 
+def next_number():
+   return random.randint(0, 9999)
+
+def next_color():
+    return [int(x*255) for x in colorsys.hls_to_rgb(random.random(), 0.6, 1)]
+
+def speak(n):
+    speech.say(str(n), sync=True)
+
 pygame.init()
 size = width, height = 720, 360
 black = 0, 0, 0
@@ -15,14 +24,13 @@ speech = ESpeakNG()
 speech.voice = 'fr-be'
 speech.speed = 120
 speech.pitch = 75
-next_number = lambda: random.randint(0, 9999)
 
 screen = pygame.display.set_mode(size)
 pygame.display.toggle_fullscreen()
 pygame.display.set_caption("Numbers game")
 font = pygame.font.SysFont('liberationsans', 256, True, False)
 n = next_number()
-color = [int(x*255) for x in colorsys.hls_to_rgb(random.random(), 0.6, 1)]
+color = next_color()
 
 while True:
     played = False
@@ -33,11 +41,11 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            color = [int(x*255) for x in colorsys.hls_to_rgb(random.random(), 0.6, 1)]
+            color = next_color()
             n = next_number()
             played = True
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-            speech.say(str(n), sync=True)
+            speak(n)
             played = True
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_f:
             pygame.display.toggle_fullscreen()
