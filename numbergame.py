@@ -4,12 +4,13 @@ import argparse
 import colorsys
 import random
 import sys
+from collections.abc import Iterator
 
 import pygame
 from espeakng import ESpeakNG
 
 
-def number_gen(m: int, n: int, shuffle: bool) -> int:
+def number_gen(m: int, n: int, shuffle: bool) -> Iterator[int]:
     nums = list(range(m, n + 1))
     if shuffle:
         random.shuffle(nums)
@@ -28,7 +29,7 @@ def speak(n):
 parser = argparse.ArgumentParser()
 parser.add_argument("--min", "-m", type=int, default=0)
 parser.add_argument("--max", "-n", type=int, default=9999)
-parser.add_argument("--shuffle", "-s", action='store_true')
+parser.add_argument("--shuffle", "-s", action="store_true")
 args = parser.parse_args()
 
 pygame.init()
