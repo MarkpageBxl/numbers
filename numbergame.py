@@ -10,8 +10,8 @@ import pygame
 from espeakng import ESpeakNG
 
 
-def number_gen(m: int, n: int, shuffle: bool) -> Iterator[int]:
-    nums = list(range(m, n + 1))
+def number_gen(m: int, n: int, step: int, shuffle: bool) -> Iterator[int]:
+    nums = list(range(m, n + 1, step))
     if shuffle:
         random.shuffle(nums)
     for i in nums:
@@ -29,7 +29,8 @@ def speak(n):
 parser = argparse.ArgumentParser()
 parser.add_argument("--min", "-m", type=int, default=0)
 parser.add_argument("--max", "-n", type=int, default=9999)
-parser.add_argument("--shuffle", "-s", action="store_true")
+parser.add_argument("--step", "-s", type=int, default=1)
+parser.add_argument("--shuffle", "-S", action="store_true")
 args = parser.parse_args()
 
 pygame.init()
@@ -45,7 +46,7 @@ screen = pygame.display.set_mode(size)
 pygame.display.toggle_fullscreen()
 pygame.display.set_caption("Numbers game")
 font = pygame.font.SysFont("liberationsans", 256, True, False)
-gen = number_gen(args.min, args.max, args.shuffle)
+gen = number_gen(args.min, args.max, args.step, args.shuffle)
 n = next(gen)
 color = next_color()
 
