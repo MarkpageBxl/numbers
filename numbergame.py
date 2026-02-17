@@ -31,6 +31,7 @@ parser.add_argument("--min", "-m", type=int, default=0)
 parser.add_argument("--max", "-n", type=int, default=9999)
 parser.add_argument("--step", "-s", type=int, default=1)
 parser.add_argument("--shuffle", "-S", action="store_true")
+parser.add_argument("--language", "-l", default="fr-be")
 args = parser.parse_args()
 
 pygame.init()
@@ -38,7 +39,7 @@ size = width, height = 720, 360
 black = 0, 0, 0
 white = 255, 255, 255
 speech = ESpeakNG()
-speech.voice = "fr-be"
+speech.voice = args.language
 speech.speed = 120
 speech.pitch = 75
 
