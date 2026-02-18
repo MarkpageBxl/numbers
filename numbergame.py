@@ -61,6 +61,7 @@ n = next(gen)
 color = next_color()
 
 done = False
+clock = pygame.time.Clock()
 while not done:
     played = False
     for event in pygame.event.get():
@@ -97,3 +98,4 @@ while not done:
     screen.fill(black)
     screen.blit(text, textRect)
     pygame.display.flip()
+    clock.tick(10)
