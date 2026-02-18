@@ -21,15 +21,16 @@ def number_gen(m: int, n: int, step: int, shuffle: bool) -> Iterator[int]:
         yield i
 
 
-def next_color():
-    return [int(x * 255) for x in colorsys.hls_to_rgb(random.random(), 0.6, 1)]
+def next_color() -> tuple[int, int, int]:
+    r, g, b = [int(x * 255) for x in colorsys.hls_to_rgb(random.random(), 0.6, 1)]
+    return r, g, b
 
 
-def speak_callback(event_type: str, index_mark=None):
+def speak_callback(event_type: str, index_mark=None) -> None:
     speech_semaphore.release()
 
 
-def speak(n):
+def speak(n: int) -> None:
     speech.speak(
         str(n), callback=speak_callback, event_types=(speechd.CallbackType.END,)
     )
