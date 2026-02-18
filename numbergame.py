@@ -69,7 +69,7 @@ while not done:
         if played:
             continue
         if event.type == pygame.QUIT or (
-            event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
+            event.type == pygame.KEYDOWN and event.key in (pygame.K_ESCAPE, pygame.K_q)
         ):
             done = True
             break
