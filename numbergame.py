@@ -45,7 +45,6 @@ parser.add_argument("--language", "-l", default="fr-be")
 args = parser.parse_args()
 
 pygame.init()
-size = width, height = 720, 360
 black = 0, 0, 0
 white = 255, 255, 255
 speech = speechd.SSIPClient("speak")
@@ -53,10 +52,10 @@ speech.set_language(args.language)
 speech.set_rate(0)
 speech.set_pitch(75)
 
-screen = pygame.display.set_mode(size)
-pygame.display.toggle_fullscreen()
+size = width, height = 800, 450
+screen = pygame.display.set_mode(size, pygame.FULLSCREEN | pygame.SCALED)
 pygame.display.set_caption("Numbers game")
-font = pygame.font.SysFont("liberationsans", 256, True, False)
+font = pygame.font.SysFont("liberationsans", 200, True, False)
 gen = number_gen(args.min, args.max, args.step, args.shuffle)
 n = next(gen)
 color = next_color()
@@ -86,7 +85,10 @@ while not done:
             speak(n)
             played = True
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-            pygame.display.toggle_fullscreen()
+            if pygame.display.is_fullscreen():
+                pygame.display.set_mode(size)
+            else:
+                pygame.display.set_mode(size, pygame.FULLSCREEN | pygame.SCALED)
             played = True
 
     text = font.render(str(n), True, color, black)
