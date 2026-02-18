@@ -71,9 +71,8 @@ while not done:
         if event.type == pygame.QUIT or (
             event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
         ):
-            pygame.quit()
-            speech.close()
-            sys.exit()
+            done = True
+            break
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             speak(n)
             color = next_color()
@@ -100,3 +99,7 @@ while not done:
     screen.blit(text, textRect)
     pygame.display.flip()
     clock.tick(10)
+
+pygame.quit()
+speech.close()
+sys.exit()
