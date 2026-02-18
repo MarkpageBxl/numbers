@@ -5,9 +5,12 @@ import colorsys
 import random
 import sys
 from collections.abc import Iterator
+from threading import Semaphore
 
 import pygame
-from espeakng import ESpeakNG
+import speechd
+
+speech_semaphore = Semaphore(0)
 
 
 def number_gen(m: int, n: int, step: int, shuffle: bool) -> Iterator[int]:
@@ -22,8 +25,15 @@ def next_color():
     return [int(x * 255) for x in colorsys.hls_to_rgb(random.random(), 0.6, 1)]
 
 
+def speak_callback(event_type: str, index_mark=None):
+    speech_semaphore.release()
+
+
 def speak(n):
-    speech.say(str(n), sync=True)
+    speech.speak(
+        str(n), callback=speak_callback, event_types=(speechd.CallbackType.END,)
+    )
+    speech_semaphore.acquire()
 
 
 parser = argparse.ArgumentParser()
@@ -38,10 +48,10 @@ pygame.init()
 size = width, height = 720, 360
 black = 0, 0, 0
 white = 255, 255, 255
-speech = ESpeakNG()
-speech.voice = args.language
-speech.speed = 120
-speech.pitch = 75
+speech = speechd.SSIPClient("speak")
+speech.set_language(args.language)
+speech.set_rate(0)
+speech.set_pitch(75)
 
 screen = pygame.display.set_mode(size)
 pygame.display.toggle_fullscreen()
@@ -61,6 +71,7 @@ while not done:
             event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
         ):
             pygame.quit()
+            speech.close()
             sys.exit()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             speak(n)
